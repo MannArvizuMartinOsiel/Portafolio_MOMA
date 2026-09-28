@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- ============================================================
+     EDITA AQUI: pon tu nombre en el titulo de la pestaña
+     ============================================================ -->
+<title>MANN ARVIZU MARTIN OSIEL · Portafolio</title>
+<meta name="description" content="Portafolio de MANN ARVIZU MARTIN OSIEL — Aplicaciones Web, Django + MySQL + Tailwind + Render." />
+<link rel="icon" href="data:,">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: {50:'#edf5f0',100:'#dcebe1',200:'#c0d9ca',300:'#9fc2ad',400:'#7da58e',500:'#638a74',600:'#4f735f',700:'#405d4e',800:'#344b3e',900:'#293c32'},
+          ink: '#141c17',
+          slate: {50:'#0c110e',100:'#151d18',200:'#dfe4dd',300:'#c8d0c7',400:'#95a197',500:'#6c796f',600:'#536157',700:'#3e4b42',900:'#141c17'}
+        },
+        fontFamily: {
+          sans: ['Inter','ui-sans-serif','system-ui','sans-serif'],
+          mono: ['"JetBrains Mono"','ui-monospace','SFMono-Regular','monospace']
+        }
+      }
+    }
+  }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
+  code, .font-mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+  .scroll-progress {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 60;
+    height: 3px;
+    background: rgba(159, 194, 173, 0.14);
+    pointer-events: none;
+  }
+  #scroll-progress-bar {
+    display: block;
+    width: 100%;
+    height: 100%;
+    transform: scaleX(0);
+    transform-origin: left;
+    background: linear-gradient(90deg, #638a74, #c0d9ca);
+    box-shadow: 0 0 12px rgba(159, 194, 173, 0.55);
+    background-size: 200% 100%;
+    animation: progress-shimmer 2.4s linear infinite;
+  }
+  nav a { position: relative; }
+  nav a::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: -7px;
+    left: 0;
+    height: 2px;
+    background: #9fc2ad;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 220ms ease;
+  }
+  nav a:hover::after, nav a:focus-visible::after { transform: scaleX(1); }
+  .language-switch {
+    display: flex;
+    gap: 2px;
+    padding: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+  }
+  .language-switch button {
+    min-width: 34px;
+    padding: 5px 7px;
+    border: 0;
+    border-radius: 5px;
+    background: transparent;
+    color: #c8d0c7;
+    font: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 180ms ease, color 180ms ease;
+  }
+  .language-switch button.is-active,
+  .language-switch button:hover { background: #4f735f; color: #fff; }
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.7;
+    background-image: linear-gradient(rgba(159, 194, 173, 0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(159, 194, 173, 0.12) 1px, transparent 1px);
+    background-size: 52px 52px;
+    mask-image: linear-gradient(to bottom, black, transparent 95%);
+    animation: grid-drift 32s linear infinite;
+  }
+  .hero-grid::after {
+    content: "";
+    position: absolute;
+    inset: -40% 0 auto;
+    height: 35%;
+    background: linear-gradient(180deg, transparent, rgba(159, 194, 173, 0.18), transparent);
+    animation: light-sweep 8s ease-in-out infinite;
+  }
+  .profile-photo {
+    position: relative;
+    z-index: 1;
+    animation: photo-glow 3s ease-in-out infinite;
+  }
+  .profile-orbit {
+    position: relative;
+    display: grid;
+    width: 144px;
+    height: 144px;
+    flex: none;
+    place-items: center;
+    isolation: isolate;
+  }
+  .profile-orbit::before, .profile-orbit::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .profile-orbit::before {
+    inset: 3px;
+    border: 1px solid rgba(159, 194, 173, 0.5);
+    border-top-color: #dcebe1;
+    border-bottom-color: #638a74;
+    animation: orbit-spin 5s linear infinite;
+  }
+  .profile-orbit::after {
+    inset: 12px -7px;
+    border: 1px dashed rgba(159, 194, 173, 0.5);
+    transform: rotate(-24deg);
+    animation: orbit-spin-reverse 9s linear infinite;
+  }
+  .hero-copy > * {
+    opacity: 0;
+    animation: hero-enter 800ms cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  }
+  .hero-copy > *:nth-child(2) { animation-delay: 90ms; }
+  .hero-copy > *:nth-child(3) { animation-delay: 180ms; }
+  .hero-copy > *:nth-child(4) { animation-delay: 270ms; }
+  .hero-copy > *:nth-child(5) { animation-delay: 360ms; }
+  .project-controls span { animation: signal-pulse 1.8s ease-in-out infinite; }
+  .project-controls span:nth-child(2) { animation-delay: 250ms; }
+  .project-controls span:nth-child(3) { animation-delay: 500ms; }
+  @keyframes progress-shimmer {
+    to { background-position: -200% 0; }
+  }
+  @keyframes orbit-spin {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes orbit-spin-reverse {
+    to { transform: rotate(-384deg); }
+  }
+  @keyframes hero-enter {
+    from { opacity: 0; filter: blur(7px); transform: translateY(24px); }
+    to { opacity: 1; filter: blur(0); transform: translateY(0); }
+  }
+  @keyframes signal-pulse {
+    50% { transform: scale(1.35); filter: brightness(1.5); }
+  }
+  @keyframes grid-drift {
+    to { background-position: 52px 52px; }
+  }
+  @keyframes light-sweep {
+    to { transform: translateY(420%); }
+  }
+  @keyframes photo-glow {
+    50% { filter: drop-shadow(0 0 12px rgba(125, 165, 142, 0.55)); }
+  }
+  .scroll-reveal.scroll-ready,
+  .scroll-stagger.scroll-ready > * {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 650ms ease, transform 650ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .scroll-reveal.scroll-ready.is-visible,
+  .scroll-stagger.scroll-ready.is-visible > * {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .scroll-stagger.is-visible > *:nth-child(2) { transition-delay: 70ms; }
+  .scroll-stagger.is-visible > *:nth-child(3) { transition-delay: 140ms; }
+  .scroll-stagger.is-visible > *:nth-child(4) { transition-delay: 210ms; }
+  .scroll-stagger.is-visible > *:nth-child(5) { transition-delay: 280ms; }
+  .scroll-stagger.is-visible > *:nth-child(6) { transition-delay: 350ms; }
+  .scroll-reveal h2 {
+    position: relative;
+    width: fit-content;
+    padding-bottom: 0.25rem;
+  }
+  .scroll-reveal h2::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 42px;
+    height: 2px;
+    background: #7da58e;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 500ms ease 180ms;
+  }
+  .scroll-reveal.is-visible h2::after { transform: scaleX(1); }
+  #stack .scroll-stagger > * {
+    transition: opacity 650ms ease, transform 280ms ease, box-shadow 280ms ease;
+  }
+  #stack .scroll-stagger > *:hover {
+    transform: translateY(-7px) scale(1.035);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.32);
+  }
+  #entregas li {
+    transition: opacity 650ms ease, transform 280ms ease, border-color 280ms ease, box-shadow 280ms ease;
+  }
+  #entregas li:hover {
+    transform: translateY(-7px) scale(1.015);
+    border-color: rgba(159, 194, 173, 0.55);
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.3);
+  }
+  #datos-alumno a, #entregas a, #contacto a, #proyecto > div:last-child a {
+    transition: transform 220ms ease, box-shadow 220ms ease, background-color 220ms ease;
+  }
+  #datos-alumno a:hover, #entregas a:hover, #contacto a:hover, #proyecto > div:last-child a:hover {
+    transform: translateY(-3px) scale(1.035);
+    box-shadow: 0 10px 24px rgba(99, 138, 116, 0.35);
+  }
+  #proyecto .overflow-hidden img { transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+  #proyecto .overflow-hidden:hover img { transform: scale(1.025); }
+  .project-window { transition: border-color 300ms ease, box-shadow 300ms ease; }
+  .project-window:hover { border-color: rgba(159, 194, 173, 0.65); box-shadow: 0 18px 42px rgba(99, 138, 116, 0.28); }
+  .back-to-top {
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    z-index: 60;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: opacity 220ms ease, transform 220ms ease, visibility 220ms ease, background-color 220ms ease;
+  }
+  .back-to-top.is-visible { opacity: 1; visibility: visible; transform: translateY(0); }
+  .back-to-top:hover { background-color: #638a74; }
+  :focus-visible { outline: 2px solid #9fc2ad; outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    #scroll-progress-bar, .hero-grid, .hero-grid::after, .profile-photo, .profile-orbit::before, .profile-orbit::after, .hero-copy > *, .project-controls span { animation: none; }
+    .hero-copy > * { opacity: 1; filter: none; transform: none; }
+    .scroll-reveal, .scroll-stagger > * { opacity: 1; transform: none; transition: none; }
+    .scroll-reveal h2::after { transition: none; transform: scaleX(1); }
+    #stack .scroll-stagger > *, #entregas li, #datos-alumno a, #entregas a, #contacto a, #proyecto > div:last-child a, #proyecto .overflow-hidden img { transition: none; }
+    #stack .scroll-stagger > *:hover, #entregas li:hover, #datos-alumno a:hover, #entregas a:hover, #contacto a:hover, #proyecto > div:last-child a:hover, #proyecto .overflow-hidden:hover img { transform: none; }
+    nav a::after, .project-window, .back-to-top, .language-switch button { transition: none; }
+  }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-200 antialiased">
+<div class="scroll-progress" aria-hidden="true"><span id="scroll-progress-bar"></span></div>
+
+<!-- ===================== NAV ===================== -->
+<header class="sticky top-0 z-50 bg-slate-100/95 backdrop-blur border-b border-white/10">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <a href="#inicio" class="flex items-center" aria-label="Inicio" data-es-label="Inicio" data-en-label="Home">
+        <img src="perfil.jpg/Captura%20de%20pantalla%202026-09-08%20115844.png" alt="" class="h-10 w-10 rounded-full object-cover ring-2 ring-brand-500/50">
+      </a>
+      <div class="flex items-center gap-3 sm:gap-6">
+        <nav class="hidden sm:flex items-center gap-6 text-sm font-medium text-slate-300">
+          <a href="#sobre-mi" class="hover:text-brand-300" data-es="Sobre mí" data-en="About me">Sobre mí</a>
+          <a href="#stack" class="hover:text-brand-300" data-es="Stack" data-en="Stack">Stack</a>
+          <a href="#proyecto" class="hover:text-brand-300" data-es="Proyecto" data-en="Project">Proyecto</a>
+          <a href="#entregas" class="hover:text-brand-300" data-es="Entregas" data-en="Work">Entregas</a>
+          <a href="#contacto" class="hover:text-brand-300" data-es="Contacto" data-en="Contact">Contacto</a>
+        </nav>
+        <div class="language-switch" role="group" aria-label="Seleccionar idioma" data-es-label="Seleccionar idioma" data-en-label="Select language">
+          <button type="button" data-language="es" aria-pressed="true" class="is-active">ES</button>
+          <button type="button" data-language="en" aria-pressed="false">EN</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     EDITA AQUI: SECCIÓN DE DATOS DEL ALUMNO (id="datos-alumno")
+     Reemplaza nombre, matrícula, grupo y la frase de presentación.
+     ============================================================ -->
+<section id="inicio" class="relative overflow-hidden bg-ink">
+  <div class="absolute inset-0 bg-gradient-to-br from-brand-900 via-ink to-slate-900"></div>
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div id="datos-alumno" class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+
+      <div class="profile-orbit">
+        <img src="perfil.jpg/Captura%20de%20pantalla%202026-09-08%20115844.png" alt="Foto de perfil de MANN ARVIZU MARTIN OSIEL" data-es-alt="Foto de perfil de MANN ARVIZU MARTIN OSIEL" data-en-alt="Profile photo of MANN ARVIZU MARTIN OSIEL" class="profile-photo h-28 w-28 rounded-full object-cover flex-none ring-4 ring-brand-500/40">
+      </div>
+
+      <div class="hero-copy text-center sm:text-left">
+        <p class="text-brand-300 text-xs font-semibold uppercase tracking-wide" data-es="Portafolio · Aplicaciones Web" data-en="Portfolio · Web Applications">Portafolio · Aplicaciones Web</p>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-white mt-1">MANN ARVIZU MARTIN OSIEL</h1>
+        <p class="text-slate-300 mt-2"><span data-es="Matrícula:" data-en="Student ID:">Matrícula:</span> <span class="text-white font-semibold">25311021</span> · <span data-es="Grupo:" data-en="Group:">Grupo:</span> <span class="text-white font-semibold">4-1</span></p>
+        <p class="mt-4 text-slate-300 max-w-xl" data-es="Estudiante de TSU en Desarrollo de Software Multiplataforma." data-en="Software Development student focused on multiplatform applications.">Estudiante de TSU en Desarrollo de Software Multiplataforma.</p>
+        <div class="mt-6 flex flex-wrap justify-center sm:justify-start gap-3">
+          <!-- EDITA AQUI: pon la URL real de tu perfil de GitHub -->
+          <a href="https://github.com/MannArvizuMartinOsiel?tab=repositories" class="rounded-lg bg-white text-ink font-semibold px-4 py-2 text-sm hover:bg-slate-100 transition">GitHub</a>
+          <!-- EDITA AQUI: pon la URL real de tu LinkedIn (opcional, puedes borrar el botón si no tienes) -->
+          <a href="https://www.linkedin.com/in/martin-osiel-mann-arvizu-424354433/" target="_blank" rel="noopener noreferrer" class="rounded-lg bg-white/10 text-white font-semibold px-4 py-2 text-sm border border-white/20 hover:bg-white/20 transition">LinkedIn</a>
+          <a href="#entregas" class="rounded-lg bg-brand-600 text-white font-semibold px-4 py-2 text-sm hover:bg-brand-500 transition" data-es="Ver mis entregas →" data-en="View my work →">Ver mis entregas →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SOBRE MÍ ===================== -->
+<section id="sobre-mi" class="scroll-reveal max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+  <p class="text-brand-300 font-semibold text-xs uppercase tracking-wide" data-es="Sobre mí" data-en="About me">Sobre mí</p>
+  <h2 class="text-2xl font-extrabold mt-1" data-es="Un poco más de contexto" data-en="A little more about me">Un poco más de contexto</h2>
+  <!-- EDITA AQUI: reemplaza este párrafo por tu propia historia (3-5 líneas) -->
+  <p class="mt-4 text-slate-300 max-w-2xl" data-es="Estudiante de TSU en Desarrollo de Software Multiplataforma en la Universidad Tecnológica de Hermosillo, con enfoque en ingeniería en sistemas. Me interesa entender cómo funcionan las aplicaciones de principio a fin: desde la base de datos hasta la interfaz que ve el usuario. En este curso aprendí a crear y publicar aplicaciones web con Django, MySQL y Tailwind CSS, y quiero seguir practicando para desarrollar sistemas completos que resuelvan problemas reales." data-en="I am a multiplatform software development student at the Technological University of Hermosillo, focused on systems engineering. I enjoy understanding how applications work from end to end, from the database to the user interface. In this course, I learned to build and deploy web applications with Django, MySQL, and Tailwind CSS, and I want to keep building complete systems that solve real problems.">
+    estudiante de TSU en Desarrollo de Software Multiplataforma en la Universidad Tecnológica de Hermosillo, con enfoque en ingeniería en sistemas. Me interesa entender cómo funcionan las aplicaciones de principio a fin: desde la base de datos hasta la interfaz que ve el usuario. En este curso aprendí a crear y publicar aplicaciones web con Django, MySQL y Tailwind CSS, y quiero seguir practicando para desarrollar sistemas completos que resuelvan problemas reales.
+  </p>
+</section>
+
+<!-- ===================== STACK TECNOLÓGICO ===================== -->
+<section id="stack" class="scroll-reveal bg-slate-100 border-y border-white/10">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <p class="text-brand-300 font-semibold text-xs uppercase tracking-wide" data-es="Tecnologías" data-en="Tech stack">Tecnologías</p>
+    <h2 class="text-2xl font-extrabold mt-1" data-es="Tecnologías que usé en este curso" data-en="Technologies I used in this course">Tecnologías que usé en este curso</h2>
+    <!-- EDITA AQUI: puedes agregar o quitar tecnologías si aprendiste algo extra -->
+    <div class="mt-6 flex flex-wrap gap-3 scroll-stagger">
+      <span class="px-4 py-2 rounded-full bg-orange-50 text-orange-700 text-sm font-semibold border border-orange-200" data-es="HTML5 semántico" data-en="Semantic HTML5">HTML5 semántico</span>
+      <span class="px-4 py-2 rounded-full bg-sky-50 text-sky-700 text-sm font-semibold border border-sky-200">Tailwind CSS</span>
+      <span class="px-4 py-2 rounded-full bg-emerald-50 text-emerald-700 text-sm font-semibold border border-emerald-200">Django (Python)</span>
+      <span class="px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-sm font-semibold border border-blue-200" data-es="MySQL en la nube" data-en="Cloud MySQL">MySQL en la nube</span>
+      <span class="px-4 py-2 rounded-full bg-violet-50 text-violet-700 text-sm font-semibold border border-violet-200">Render</span>
+      <span class="px-4 py-2 rounded-full bg-slate-50 text-slate-200 text-sm font-semibold border border-white/10">Git + GitHub</span>
+      <!-- EDITA AQUI (opcional): agrega tu propia etiqueta, ej: -->
+      <!-- <span class="px-4 py-2 rounded-full bg-rose-50 text-rose-700 text-sm font-semibold border border-rose-200">[Otra tecnología]</span> -->
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROYECTO INTEGRADOR ===================== -->
+<section id="proyecto" class="scroll-reveal max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+  <p class="text-brand-300 font-semibold text-xs uppercase tracking-wide" data-es="Proyecto integrador" data-en="Featured project">Proyecto integrador</p>
+  <!-- EDITA AQUI: pon el nombre que le diste a tu proyecto -->
+  <h2 class="text-2xl font-extrabold mt-1">ine_personal_MOMA</h2>
+  <!-- EDITA AQUI: describe en 2-4 líneas qué hace tu proyecto y qué problema resuelve -->
+  <p class="mt-4 text-slate-300 max-w-2xl" data-es="Mi INE virtual para solicitudes de trabajo." data-en="My virtual ID for job applications.">Mi INE virtual para solicitudes de trabajo.</p>
+
+  <div class="project-window mt-8 rounded-2xl border border-white/10 overflow-hidden">
+    <div class="project-controls flex h-10 items-center gap-2 border-b border-white/10 bg-white/5 px-4">
+      <span class="h-2.5 w-2.5 rounded-full bg-rose-400/80"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-amber-300/80"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-emerald-400/80"></span>
+      <span class="ml-2 font-mono text-xs text-slate-400" data-es="Vista previa del proyecto" data-en="Project preview">Vista previa del proyecto</span>
+    </div>
+    <img src="perfil.jpg/Captura%20de%20pantalla%202026-09-28%20111956.png" alt="Captura del proyecto ine_personal_MOMA" data-es-alt="Captura del proyecto ine_personal_MOMA" data-en-alt="Screenshot of the ine_personal_MOMA project" class="block w-full h-auto">
+  </div>
+
+  <div class="mt-6">
+    <!-- EDITA AQUI: pon la URL final de tu proyecto (la misma de la Unidad 4) -->
+    <a href="[URL-UNIDAD-4]" class="inline-flex items-center gap-2 rounded-lg bg-brand-600 hover:bg-brand-700 text-white font-semibold px-5 py-3 text-sm transition">
+      <span data-es="Ver proyecto en vivo →" data-en="View live project →">Ver proyecto en vivo →</span>
+    </a>
+  </div>
+</section>
+
+<!-- ============================================================
+     EDITA AQUI: ENLACES DE ENTREGAS POR UNIDAD (4 enlaces)
+     Reemplaza cada [URL-UNIDAD-X] por la URL real de Render.
+     ============================================================ -->
+<section id="entregas" class="scroll-reveal bg-ink text-white">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <p class="text-brand-300 font-semibold text-xs uppercase tracking-wide" data-es="Evidencia por unidad" data-en="Work by unit">Evidencia por unidad</p>
+    <h2 class="text-2xl font-extrabold mt-1" data-es="Mis entregas publicadas" data-en="My published work">Mis entregas publicadas</h2>
+    <p class="mt-3 text-slate-300 max-w-2xl" data-es="Aquí se muestran las evidencias realizadas durante el curso. Las unidades que todavía no se han trabajado permanecen marcadas como pendientes." data-en="This section showcases my work from the course. Units that are still in progress are marked as pending.">Aquí se muestran las evidencias realizadas durante el curso. Las unidades que todavía no se han trabajado permanecen marcadas como pendientes.</p>
+
+    <ul class="mt-8 grid sm:grid-cols-2 gap-4 scroll-stagger">
+      <li class="rounded-xl bg-white/5 border border-white/10 p-5 hover:bg-white/10 transition">
+        <p class="text-xs font-bold text-orange-300 uppercase" data-es="Unidad 1" data-en="Unit 1">Unidad 1</p>
+        <p class="font-semibold mt-1" data-es="Portafolio estático (HTML + Tailwind)" data-en="Static portfolio (HTML + Tailwind)">Portafolio estático (HTML + Tailwind)</p>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <a href="https://github.com/MannArvizuMartinOsiel/Portafolio_MOMA" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-center text-sm font-semibold text-white transition hover:bg-white/10" data-es="Ver en GitHub Práctica 1" data-en="View on GitHub Practice 1">Ver en GitHub Práctica 1</a>
+          <a href="https://github.com/MannArvizuMartinOsiel/ine_personal_MOMA" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-center text-sm font-semibold text-white transition hover:bg-white/10" data-es="Ver en GitHub Práctica 2" data-en="View on GitHub Practice 2">Ver en GitHub Práctica 2</a>
+          <a href="https://ine-personal-moma.onrender.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-lg bg-brand-600 px-3 py-2 text-center text-sm font-semibold text-white transition hover:bg-brand-500" data-es="Ver en Render Práctica 2" data-en="View on Render Practice 2">Ver en Render Práctica 2</a>
+        </div>
+      </li>
+      <li class="rounded-xl bg-white/5 border border-white/10 p-5 hover:bg-white/10 transition">
+        <p class="text-xs font-bold text-emerald-300 uppercase" data-es="Unidad 2" data-en="Unit 2">Unidad 2</p>
+        <p class="font-semibold mt-1" data-es="Aplicación Django + MySQL en Render" data-en="Django + MySQL app on Render">App Django + MySQL en Render</p>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <a href="https://github.com/MannArvizuMartinOsiel/miproyecto_django_aiven_moma" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-center text-sm font-semibold text-white transition hover:bg-white/10" data-es="Ver en GitHub" data-en="View on GitHub">Ver en GitHub</a>
+          <span class="inline-flex items-center justify-center rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm font-semibold text-slate-400" data-es="Render · Pendiente" data-en="Render · Pending">Render · Pendiente</span>
+        </div>
+      </li>
+      <li class="rounded-xl bg-white/5 border border-white/10 p-5 hover:bg-white/10 transition">
+        <p class="text-xs font-bold text-blue-300 uppercase" data-es="Unidad 3" data-en="Unit 3">Unidad 3</p>
+        <p class="font-semibold mt-1" data-es="CRUD dinámico con inicio de sesión" data-en="Dynamic CRUD with login and sessions">CRUD dinámico con inicio de sesión</p>
+        <span class="text-sm text-slate-400 mt-2 inline-block" data-es="Pendiente" data-en="Pending">Pendiente</span>
+      </li>
+      <li class="rounded-xl bg-white/5 border border-white/10 p-5 hover:bg-white/10 transition">
+        <p class="text-xs font-bold text-purple-300 uppercase" data-es="Unidad 4" data-en="Unit 4">Unidad 4</p>
+        <p class="font-semibold mt-1" data-es="Proyecto integrador final" data-en="Final capstone project">Proyecto integrador final</p>
+        <span class="text-sm text-slate-400 mt-2 inline-block" data-es="Pendiente" data-en="Pending">Pendiente</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== CONTACTO ===================== -->
+<section id="contacto" class="scroll-reveal max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+  <p class="text-brand-300 font-semibold text-xs uppercase tracking-wide" data-es="Contacto" data-en="Contact">Contacto</p>
+  <h2 class="text-2xl font-extrabold mt-1" data-es="Hablemos" data-en="Let's talk">Hablemos</h2>
+  <!-- EDITA AQUI: pon tu correo, y si quieres, teléfono o red social adicional -->
+  <div class="mt-6 flex flex-wrap gap-4 text-sm scroll-stagger">
+    <a href="mailto:a25311021@uthermosillo.edu.mx" class="rounded-lg border border-white/15 px-4 py-2 font-semibold text-slate-300 hover:border-brand-400 hover:text-brand-300 transition">✉️ a25311021@uthermosillo.edu.mx</a>
+    <button id="copy-email" type="button" data-email="a25311021@uthermosillo.edu.mx" class="hidden sm:inline-flex rounded-lg border border-white/15 px-4 py-2 font-semibold text-slate-300 hover:border-brand-400 hover:text-brand-300 transition" data-es="Copiar correo" data-en="Copy email">Copiar correo</button>
+    <span id="copy-email-status" class="sr-only" aria-live="polite"></span>
+    <a href="https://github.com/MannArvizuMartinOsiel?tab=repositories" class="rounded-lg border border-white/15 px-4 py-2 font-semibold text-slate-300 hover:border-brand-400 hover:text-brand-300 transition">GitHub: MannArvizuMartinOsiel</a>
+  </div>
+</section>
+
+<footer class="scroll-reveal bg-slate-100 border-t border-white/10 text-slate-400 text-sm">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row justify-between gap-2">
+    <!-- EDITA AQUI: pon tu nombre en el copyright -->
+    <p data-es="© 2026 MANN ARVIZU MARTIN OSIEL. Todos los derechos reservados." data-en="© 2026 MANN ARVIZU MARTIN OSIEL. All rights reserved.">© 2026 MANN ARVIZU MARTIN OSIEL. Todos los derechos reservados.</p>
+    <p data-es="Aplicaciones Web · Docente: Bernardo Prado Díaz" data-en="Web Applications · Instructor: Bernardo Prado Díaz">Aplicaciones Web · Docente: Bernardo Prado Díaz</p>
+  </div>
+</footer>
+
+<button id="back-to-top" type="button" class="back-to-top hidden h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-slate-100 text-xl font-semibold text-white shadow-lg sm:flex" aria-label="Volver arriba" title="Volver arriba" data-es-label="Volver arriba" data-en-label="Back to top" aria-hidden="true" tabindex="-1">↑</button>
+
+<script>
+  const progressBar = document.querySelector('#scroll-progress-bar');
+  let progressFrame = 0;
+  const updateScrollProgress = () => {
+    if (progressFrame) return;
+    progressFrame = requestAnimationFrame(() => {
+      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollableHeight > 0 ? window.scrollY / scrollableHeight : 0;
+      progressBar.style.transform = `scaleX(${Math.min(progress, 1)})`;
+      progressFrame = 0;
+    });
+  };
+  window.addEventListener('scroll', updateScrollProgress, { passive: true });
+  window.addEventListener('resize', updateScrollProgress);
+  updateScrollProgress();
+
+  const copyEmailButton = document.querySelector('#copy-email');
+  const copyEmailStatus = document.querySelector('#copy-email-status');
+  const languageButtons = document.querySelectorAll('[data-language]');
+  const copyMessages = {
+    es: { idle: 'Copiar correo', copied: 'Copiado', copiedStatus: 'Correo copiado al portapapeles.', error: 'No se pudo copiar el correo.' },
+    en: { idle: 'Copy email', copied: 'Copied', copiedStatus: 'Email copied to clipboard.', error: 'Could not copy the email.' }
+  };
+  const setLanguage = language => {
+    const selectedLanguage = language === 'en' ? 'en' : 'es';
+    document.documentElement.lang = selectedLanguage;
+    document.querySelectorAll('[data-es][data-en]').forEach(element => {
+      element.textContent = element.dataset[selectedLanguage];
+    });
+    document.querySelectorAll('[data-es-alt][data-en-alt]').forEach(element => {
+      element.alt = element.dataset[`${selectedLanguage}Alt`];
+    });
+    document.querySelectorAll('[data-es-label][data-en-label]').forEach(element => {
+      element.setAttribute('aria-label', element.dataset[`${selectedLanguage}Label`]);
+      if (element.id === 'back-to-top') element.title = element.dataset[`${selectedLanguage}Label`];
+    });
+    document.querySelectorAll('[data-language]').forEach(button => {
+      const isActive = button.dataset.language === selectedLanguage;
+      button.classList.toggle('is-active', isActive);
+      button.setAttribute('aria-pressed', String(isActive));
+    });
+    const languageGroup = document.querySelector('.language-switch');
+    languageGroup.setAttribute('aria-label', languageGroup.dataset[`${selectedLanguage}Label`]);
+    document.title = selectedLanguage === 'es' ? 'MANN ARVIZU MARTIN OSIEL · Portafolio' : 'MANN ARVIZU MARTIN OSIEL · Portfolio';
+    document.querySelector('meta[name="description"]').content = selectedLanguage === 'es'
+      ? 'Portafolio de MANN ARVIZU MARTIN OSIEL — Aplicaciones Web, Django + MySQL + Tailwind + Render.'
+      : 'Portfolio of MANN ARVIZU MARTIN OSIEL — Web Applications, Django + MySQL + Tailwind + Render.';
+    const currentCopyState = copyEmailButton.dataset.copyState;
+    copyEmailButton.textContent = currentCopyState === 'copied' ? copyMessages[selectedLanguage].copied : copyMessages[selectedLanguage].idle;
+    copyEmailStatus.textContent = currentCopyState === 'copied' ? copyMessages[selectedLanguage].copiedStatus : currentCopyState === 'error' ? copyMessages[selectedLanguage].error : '';
+    try {
+      localStorage.setItem('portfolio-language', selectedLanguage);
+    } catch {}
+  };
+  languageButtons.forEach(button => button.addEventListener('click', () => setLanguage(button.dataset.language)));
+  let savedLanguage = 'es';
+  try {
+    savedLanguage = localStorage.getItem('portfolio-language') || 'es';
+  } catch {}
+  setLanguage(savedLanguage);
+
+  copyEmailButton.addEventListener('click', async () => {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(copyEmailButton.dataset.email);
+      } else {
+        const temporaryInput = document.createElement('textarea');
+        temporaryInput.value = copyEmailButton.dataset.email;
+        temporaryInput.setAttribute('readonly', '');
+        temporaryInput.style.position = 'fixed';
+        temporaryInput.style.opacity = '0';
+        document.body.append(temporaryInput);
+        temporaryInput.select();
+        const copied = document.execCommand('copy');
+        temporaryInput.remove();
+        if (!copied) throw new Error('Clipboard unavailable');
+      }
+      copyEmailButton.dataset.copyState = 'copied';
+    } catch {
+      copyEmailButton.dataset.copyState = 'error';
+    }
+    setLanguage(document.documentElement.lang);
+    window.setTimeout(() => {
+      delete copyEmailButton.dataset.copyState;
+      setLanguage(document.documentElement.lang);
+    }, 1800);
+  });
+
+  const backToTop = document.querySelector('#back-to-top');
+  const updateBackToTop = () => {
+    const isVisible = window.scrollY > 500;
+    backToTop.classList.toggle('is-visible', isVisible);
+    backToTop.setAttribute('aria-hidden', String(!isVisible));
+    backToTop.tabIndex = isVisible ? 0 : -1;
+  };
+  window.addEventListener('scroll', updateBackToTop, { passive: true });
+  updateBackToTop();
+  backToTop.addEventListener('click', () => {
+    const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+    window.scrollTo({ top: 0, behavior });
+  });
+
+  const revealItems = document.querySelectorAll('.scroll-reveal, .scroll-stagger');
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealItems.forEach(item => {
+      item.classList.add('scroll-ready');
+      revealObserver.observe(item);
+    });
+  }
+</script>
+</body>
+<script>'undefined'=== typeof _trfq || (window._trfq = []);'undefined'=== typeof _trfd && (window._trfd=[]),_trfd.push({'tccl.baseHost':'secureserver.net'},{'ap':'cpsh-oh'},{'server':'p3plzcpnl504927'},{'dcenter':'p3'},{'cp_id':'10837813'},{'cp_cl':'8'}) // Monitoring performance to make your website faster. If you want to opt-out, please contact web hosting support.</script><script src='https://img1.wsimg.com/traffic-assets/js/tccl.min.js'></script></html>

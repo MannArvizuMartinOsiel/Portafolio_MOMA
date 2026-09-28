@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: portafolio-moma
+    runtime: static
+    buildCommand: 'mkdir -p public/perfil.jpg && cp portafolioMOMA.HTML public/index.html && cp "perfil.jpg/Captura de pantalla 2026-09-08 115844.png" public/perfil.jpg/ && cp "perfil.jpg/Captura de pantalla 2026-09-28 111956.png" public/perfil.jpg/'
+    staticPublishPath: public
